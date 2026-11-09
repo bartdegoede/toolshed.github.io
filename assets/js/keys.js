@@ -136,7 +136,12 @@ document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("clic
 
 // On a phone the list sits above the page; don't move focus around there.
 // Analytics events (no-ops without analytics, see partials/analytics.html).
-const track = (name, params) => { if (typeof window.gtag === "function") window.gtag("event", name, params || {}); };
+// With Tag Manager they're dataLayer events (add a GA4 event tag with a custom
+// event trigger for each); with plain GA4 they go through gtag.
+const track = (name, params) => {
+  if (typeof window.gtag === "function") window.gtag("event", name, params || {});
+  else if (Array.isArray(window.dataLayer)) window.dataLayer.push({ event: name, ...(params || {}) });
+};
 document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", () => track("copy_install")));
 let searched = false;
 q.addEventListener("change", () => { if (q.value.trim()) track("search", { search_term: q.value.trim().slice(0, 80) }); });

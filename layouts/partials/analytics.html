@@ -1,9 +1,24 @@
 {{- /*
-  Google Analytics 4, like the blog: production builds only, and nothing at
-  all for visitors with Do Not Track on (gtag is then never defined, so the
-  event calls in keys.js do nothing).
+  Analytics, production builds only, and nothing at all for visitors with Do
+  Not Track on. Either a Google Tag Manager container (params.googleTagManager,
+  GTM-…, where the GA4 tag is configured) or plain GA4 (params.googleAnalytics,
+  G-…). keys.js sends its events to whichever is loaded.
 */ -}}
-{{- with site.Params.googleAnalytics }}{{ if hugo.IsProduction }}
+{{- if hugo.IsProduction }}
+{{- with site.Params.googleTagManager }}
+<script>
+(function () {
+  var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+  if (dnt === "1" || dnt === "yes") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtm.js?id={{ . }}";
+  document.head.appendChild(s);
+})();
+</script>
+{{- else }}{{ with site.Params.googleAnalytics }}
 <script>
 (function () {
   var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -18,4 +33,5 @@
   gtag("config", "{{ . }}");
 })();
 </script>
-{{- end }}{{ end -}}
+{{- end }}{{ end }}
+{{- end -}}
