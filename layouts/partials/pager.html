@@ -1,0 +1,9 @@
+{{- $pages := slice site.Home | append (site.GetPage "/docs").Pages.ByWeight -}}
+{{- $i := -1 -}}
+{{- range $n, $p := $pages }}{{ if eq $p.RelPermalink $.RelPermalink }}{{ $i = $n }}{{ end }}{{ end -}}
+{{- if ge $i 0 }}
+<nav class="pager" aria-label="Previous and next page">
+  {{ if gt $i 0 }}{{ with index $pages (sub $i 1) }}<a href="{{ .RelPermalink }}" rel="prev">← {{ if .IsHome }}Overview{{ else }}{{ .Title }}{{ end }}</a>{{ end }}{{ else }}<span></span>{{ end }}
+  {{ if lt (add $i 1) (len $pages) }}{{ with index $pages (add $i 1) }}<a href="{{ .RelPermalink }}" rel="next">{{ .Title }} →</a>{{ end }}{{ end }}
+</nav>
+{{- end }}

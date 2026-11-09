@@ -1,0 +1,25 @@
+{{/*
+  Turns the toolshed repo's docs/*.md (mounted at assets/docs) into pages.
+  Each file starts with "# Title" and a "<!-- summary: … -->" line; both are
+  taken out of the body. Order comes from site.Params.docs.
+*/}}
+{{ $order := site.Params.docs }}
+{{ range resources.Match "docs/*.md" }}
+  {{ $name := path.BaseName .Name }}
+  {{ $raw := .Content }}
+  {{ $title := $name }}
+  {{ with findRESubmatch `(?m)^# (.+)$` $raw 1 }}{{ $title = index (index . 0) 1 }}{{ end }}
+  {{ $summary := "" }}
+  {{ with findRESubmatch `<!--\s*summary:\s*(.+?)\s*-->` $raw 1 }}{{ $summary = index (index . 0) 1 }}{{ end }}
+  {{ $body := replaceRE `(?m)\A\s*# .+\n` "" $raw 1 }}
+  {{ $body = replaceRE `<!--\s*summary:.*?-->\n?` "" $body 1 }}
+  {{ $weight := 100 }}
+  {{ range $i, $n := $order }}{{ if eq $n $name }}{{ $weight = add $i 1 }}{{ end }}{{ end }}
+  {{ $.AddPage (dict
+      "path" $name
+      "title" $title
+      "weight" $weight
+      "params" (dict "summary" $summary "source" (printf "docs/%s.md" $name))
+      "content" (dict "mediaType" "text/markdown" "value" $body)
+  ) }}
+{{ end }}

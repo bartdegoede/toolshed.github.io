@@ -1,0 +1,17 @@
+{{- /*
+  Links in the docs are written for GitHub: other pages as "secrets.md#anchor",
+  files in the repo as "../registry.yaml". Point them at the site's pages and
+  at GitHub.
+*/ -}}
+{{- $dest := .Destination -}}
+{{- $ver := partial "toolshed-version.html" . | default "main" -}}
+{{- with findRESubmatch `^([a-z0-9-]+)\.md(#.*)?$` $dest 1 -}}
+  {{- $m := index . 0 -}}
+  {{- $dest = printf "%sdocs/%s/%s" ("/" | relURL) (index $m 1) (index $m 2) -}}
+{{- else -}}
+  {{- if hasPrefix $dest "../" -}}
+    {{- $dest = printf "%s/blob/%s/%s" site.Params.repo $ver (strings.TrimPrefix "../" $dest) -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $dest | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if strings.HasPrefix $dest "http" }} rel="noopener"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- /* */ -}}
