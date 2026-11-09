@@ -13,6 +13,9 @@ params:
   tagline: add MCP tools to Claude Code & Codex
   description: Add any MCP server to Claude Code and Codex with one command or a keypress, with the tokens in your keychain instead of your dotfiles.
   repo: https://github.com/bartdegoede/toolshed
+  # Google Analytics 4 measurement ID (G-…). Only used in production builds,
+  # and not for visitors with Do Not Track on. Empty: no analytics.
+  googleAnalytics: ""
   # Order of the docs pages (file names in the toolshed repo's docs/).
   # Pages not listed here come after these, alphabetically.
   docs:
