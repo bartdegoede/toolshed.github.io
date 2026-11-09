@@ -1,4 +1,4 @@
-module github.com/bartdegoede/toolshed.github.io
+module github.com/bartdegoede/toolshed.run
 
 go 1.27.3
 
