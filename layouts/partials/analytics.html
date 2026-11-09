@@ -11,6 +11,9 @@
   var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
   if (dnt === "1" || dnt === "yes") return;
   window.dataLayer = window.dataLayer || [];
+  // gtag-style commands: the container's Google tag (G-1WEVLLSG1J) picks up
+  // the events keys.js sends, without a tag per event in Tag Manager.
+  window.gtag = function () { dataLayer.push(arguments); };
   window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
   var s = document.createElement("script");
   s.async = true;
