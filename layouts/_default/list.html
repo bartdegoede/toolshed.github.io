@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article>
+  <h1>Docs<small>Everything about toolshed</small></h1>
+  <ul class="index">
+  {{ range (site.GetPage "/docs").Pages.ByWeight }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> <span>{{ .Params.summary }}</span></li>
+  {{ end }}
+  </ul>
+</article>
+{{ end }}

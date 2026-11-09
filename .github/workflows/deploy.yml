@@ -1,0 +1,68 @@
+name: Deploy
+
+# Builds the site against the latest toolshed release (its docs/ folder is a
+# Hugo module) and publishes it to GitHub Pages at toolshed.run. The daily run
+# picks up new releases; run it by hand to publish one right away.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.169.0
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+      - name: Install Hugo
+        run: |
+          curl -sSfL -o hugo.deb "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i hugo.deb && rm hugo.deb
+      # Deploys use the latest release, so the docs describe what people
+      # install. Pull requests use main, to check the site against docs
+      # changes before they're released.
+      - name: Use the toolshed docs
+        run: |
+          hugo mod get github.com/bartdegoede/toolshed@${{ github.event_name == 'pull_request' && 'main' || 'latest' }}
+          grep bartdegoede/toolshed go.mod
+      - name: Build
+        run: hugo --minify --gc --panicOnWarning
+      - name: Check internal links
+        run: |
+          broken=0
+          for p in $(grep -rhoE 'href="/[^"#]*' public | sed 's/href="//' | sort -u); do
+            [ -e "public$p" ] || [ -e "public${p}index.html" ] || { echo "broken link: $p"; broken=1; }
+          done
+          exit $broken
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: public
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

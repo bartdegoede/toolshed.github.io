@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{- $title := cond .IsHome "toolshed: MCP servers for Claude Code and Codex" (printf "%s · toolshed" .Title) }}
+{{- $desc := cond .IsHome site.Params.description (.Params.summary | default site.Params.description) }}
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ "docs/demo.gif" | absURL }}">
+<meta name="theme-color" content="#1e1e2e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚒</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+{{ with resources.Get "css/site.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">{{ end }}
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+{{- $ver := partial "toolshed-version.html" . }}
+<header class="bar">
+  <a class="brand" href="{{ "/" | relURL }}"><b>⚒ toolshed</b><span>{{ site.Params.tagline }}</span></a>
+  <a class="ver" href="{{ site.Params.repo }}/releases{{ with $ver }}/tag/{{ . }}{{ end }}">{{ $ver | default "dev" }}</a>
+</header>
+<div class="panes">
+  <nav class="list" id="list" aria-label="Pages">
+    <div class="search" hidden><span aria-hidden="true">/</span><input id="q" type="search" placeholder="search the docs" autocomplete="off" aria-label="Search the docs"></div>
+    <div class="section">DOCS</div>
+    <ul id="items">
+      {{- $pages := slice site.Home | append (site.GetPage "/docs").Pages.ByWeight }}
+      {{- range $pages }}
+      <li><a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $.RelPermalink }} aria-current="page"{{ end }} data-text="{{ lower (printf "%s %s %s" .Title .Params.summary .Plain) }}">
+        <span class="name">{{ if .IsHome }}Overview{{ else }}{{ .Title }}{{ end }}</span>
+        <span class="sum">{{ .Params.summary }}</span></a></li>
+      {{- end }}
+    </ul>
+    <p class="none" id="none" hidden>No page matches.</p>
+    <a class="gh" href="{{ site.Params.repo }}">github.com/bartdegoede/toolshed ↗</a>
+  </nav>
+  <main class="detail" id="content" tabindex="-1">
+    {{ block "main" . }}{{ end }}
+  </main>
+</div>
+<footer class="keys" id="keys" aria-hidden="true"></footer>
+<div class="help" id="help" hidden role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+  <div class="box">
+    <div class="label">KEYS</div>
+    <dl>
+      <dt>↑ ↓ · j k</dt><dd>move through the pages</dd>
+      <dt>enter · →</dt><dd>open the page</dd>
+      <dt>tab</dt><dd>switch between the list and the page</dd>
+      <dt>j k · space</dt><dd>scroll the page (when it's focused)</dd>
+      <dt>g · G</dt><dd>first · last</dd>
+      <dt>/</dt><dd>search</dd>
+      <dt>esc</dt><dd>close, clear, back to the list</dd>
+      <dt>?</dt><dd>this help</dd>
+    </dl>
+    <p>Mouse, touch and the back button work as usual.</p>
+  </div>
+</div>
+{{ with resources.Get "js/keys.js" | js.Build (dict "minify" true) | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>{{ end }}
+</body>
+</html>

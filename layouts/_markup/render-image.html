@@ -1,0 +1,5 @@
+{{- /* Images next to the docs (import.png) are published under /docs/. */ -}}
+{{- $src := .Destination -}}
+{{- if not (or (hasPrefix $src "http") (hasPrefix $src "/")) -}}{{- $src = printf "%sdocs/%s" ("/" | relURL) $src -}}{{- end -}}
+<img src="{{ $src | safeURL }}" alt="{{ .Text }}" loading="lazy">
+{{- /* */ -}}

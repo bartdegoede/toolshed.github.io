@@ -1,0 +1,11 @@
+{{ define "main" }}
+<article>
+  <h1>{{ .Title }}{{ with .Params.summary }}<small>{{ . }}</small>{{ end }}</h1>
+  {{ .Content }}
+  {{ with .Params.source }}
+  {{- $ver := partial "toolshed-version.html" $ }}
+  <p class="edit"><a href="{{ site.Params.repo }}/blob/{{ $ver | default "main" }}/{{ . }}">{{ . }} on GitHub ↗</a></p>
+  {{ end }}
+  {{ partial "pager.html" . }}
+</article>
+{{ end }}

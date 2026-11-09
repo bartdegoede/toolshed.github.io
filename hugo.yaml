@@ -1,0 +1,41 @@
+baseURL: https://toolshed.run/
+title: toolshed
+locale: en
+disableKinds: [taxonomy, term, RSS]
+enableRobotsTXT: true
+markup:
+  highlight:
+    noClasses: false
+  goldmark:
+    parser:
+      autoHeadingIDType: github   # same anchors as on GitHub
+params:
+  tagline: add MCP tools to Claude Code & Codex
+  description: Add any MCP server to Claude Code and Codex with one command or a keypress, with the tokens in your keychain instead of your dotfiles.
+  repo: https://github.com/bartdegoede/toolshed
+  # Order of the docs pages (file names in the toolshed repo's docs/).
+  # Pages not listed here come after these, alphabetically.
+  docs:
+    - install
+    - getting-started
+    - commands
+    - registry
+    - secrets
+    - import
+    - agents
+    - updates
+    - doctor
+    - clients
+    - build-a-server
+module:
+  imports:
+    # The docs live in the toolshed repo, so they can't drift from the code.
+    # CI builds against the latest release (see .github/workflows/deploy.yml).
+    - path: github.com/bartdegoede/toolshed
+      mounts:
+        - source: docs
+          target: assets/docs
+          files: ["*.md"]
+        - source: docs
+          target: static/docs
+          files: ["*.png", "*.gif", "*.jpg", "*.svg"]

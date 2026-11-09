@@ -1,0 +1,5 @@
+{{- /* The toolshed release the docs were built from ("" when developing against a local checkout). */ -}}
+{{- $v := "" -}}
+{{- range hugo.Deps -}}{{- if eq .Path "github.com/bartdegoede/toolshed" -}}{{- $v = .Version -}}{{- end -}}{{- end -}}
+{{- if not (hasPrefix $v "v") }}{{ $v = "" }}{{ end -}}
+{{- return $v -}}
