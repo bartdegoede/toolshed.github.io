@@ -79,14 +79,12 @@ article pre { position:relative; }
 .home .copy:hover, .home .copy:focus-visible { background:var(--mauve); color:var(--crust); outline:none; }
 .home .alt { color:var(--overlay); font-size:14px; margin:10px 0 28px; }
 .home .term { margin:0 0 8px; } .home .term img { width:100%; height:auto; display:block; border-radius:10px; box-shadow:0 24px 60px -24px rgba(203,166,247,.35); }
-.home .features { display:grid; grid-template-columns:1fr 1fr; gap:4px 28px; margin:0; }
-.home .features dt { font:600 15px var(--mono); color:var(--text); margin-top:14px; }
+.home .features { display:grid; grid-template-columns:1fr 1fr; gap:22px 32px; margin:14px 0 0; }
+.home .features dt { font:600 15px var(--mono); color:var(--text); }
 .home .features dt::before { content:"● "; color:var(--mauve); }
 .home .features dd { margin:2px 0 0; color:var(--sub); font-size:15px; }
-.home .features dt:nth-of-type(odd) { grid-column:1; } .home .features dt:nth-of-type(even) { grid-column:2; }
-.home .features dd:nth-of-type(odd) { grid-column:1; } .home .features dd:nth-of-type(even) { grid-column:2; }
 .home .foot { color:var(--overlay); font-size:14px; margin-top:36px; }
-@media (max-width: 1100px) { .home .features { grid-template-columns:1fr; } .home .features dt, .home .features dd { grid-column:1 !important; } }
+@media (max-width: 1100px) { .home .features { grid-template-columns:1fr; gap:16px; } }
 
 /* ── light: Catppuccin Latte, for light-mode systems ── */
 @media (prefers-color-scheme: light) {

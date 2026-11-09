@@ -135,6 +135,18 @@ document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("clic
 }));
 
 // On a phone the list sits above the page; don't move focus around there.
+// Analytics events (no-ops without analytics, see partials/analytics.html).
+const track = (name, params) => { if (typeof window.gtag === "function") window.gtag("event", name, params || {}); };
+document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", () => track("copy_install")));
+let searched = false;
+q.addEventListener("change", () => { if (q.value.trim()) track("search", { search_term: q.value.trim().slice(0, 80) }); });
+q.addEventListener("input", () => { if (!searched && q.value.trim()) { searched = true; track("search_start"); } });
+document.addEventListener("keydown", (e) => {
+  if (!e.metaKey && !e.ctrlKey && !e.altKey && ["j", "k", "?", "/"].includes(e.key) && document.activeElement !== q) {
+    if (!sessionStorage.getItem("ts-keys")) { sessionStorage.setItem("ts-keys", "1"); track("keyboard_nav", { key: e.key }); }
+  }
+});
+
 const narrow = matchMedia("(max-width: 760px)").matches;
 if (narrow) focus = "list";
 else if (focus === "page") page.focus({ preventScroll: true }); else list.focus({ preventScroll: true });

@@ -1,0 +1,21 @@
+{{- /*
+  Google Analytics 4, like the blog: production builds only, and nothing at
+  all for visitors with Do Not Track on (gtag is then never defined, so the
+  event calls in keys.js do nothing).
+*/ -}}
+{{- with site.Params.googleAnalytics }}{{ if hugo.IsProduction }}
+<script>
+(function () {
+  var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+  if (dnt === "1" || dnt === "yes") return;
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id={{ . }}";
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { dataLayer.push(arguments); };
+  gtag("js", new Date());
+  gtag("config", "{{ . }}");
+})();
+</script>
+{{- end }}{{ end -}}

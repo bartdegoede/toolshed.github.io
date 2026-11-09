@@ -13,18 +13,30 @@
   </figure>
   <h2>What it does</h2>
   <dl class="features">
-    <dt>Add anything</dt>
-    <dd>An npm or Python package, any CLI that speaks MCP, or a remote URL. toolshed starts it and lists its tools, so you know it works. <a href="{{ "docs/getting-started/" | relURL }}">Getting started</a></dd>
-    <dt>Both agents, equally</dt>
-    <dd>One keypress installs it into Claude Code and Codex, for every project or one repository, without touching the settings you made yourself. <a href="{{ "docs/clients/" | relURL }}">Claude Code and Codex</a></dd>
-    <dt>Secrets in the keychain</dt>
-    <dd>Servers start through a small wrapper that reads the token from your keychain, for local and remote servers alike. <a href="{{ "docs/secrets/" | relURL }}">Secrets</a></dd>
-    <dt>Import what you have</dt>
-    <dd>Adopt the servers you set up by hand, and move their tokens out of plain text. <a href="{{ "docs/import/" | relURL }}">Import</a></dd>
-    <dt>Let your agent do it</dt>
-    <dd>toolshed is an MCP server itself: ask your agent to add a server, and approve what it will run with one keypress. <a href="{{ "docs/agents/" | relURL }}">Your agent</a></dd>
-    <dt>Share a toolbox</dt>
-    <dd>Your tools live in one small YAML file. Commit it, and your team gets the same setup. <a href="{{ "docs/registry/" | relURL }}">The registry</a></dd>
+    <div>
+      <dt>Add anything</dt>
+      <dd>An npm or Python package, any CLI that speaks MCP, or a remote URL. toolshed starts it and lists its tools, so you know it works. <a href="{{ "docs/getting-started/" | relURL }}">Getting started</a></dd>
+    </div>
+    <div>
+      <dt>Both agents, equally</dt>
+      <dd>One keypress installs it into Claude Code and Codex, for every project or one repository, without touching the settings you made yourself. <a href="{{ "docs/clients/" | relURL }}">Claude Code and Codex</a></dd>
+    </div>
+    <div>
+      <dt>Secrets in the keychain</dt>
+      <dd>Servers start through a small wrapper that reads the token from your keychain, for local and remote servers alike. <a href="{{ "docs/secrets/" | relURL }}">Secrets</a></dd>
+    </div>
+    <div>
+      <dt>Import what you have</dt>
+      <dd>Adopt the servers you set up by hand, and move their tokens out of plain text. <a href="{{ "docs/import/" | relURL }}">Import</a></dd>
+    </div>
+    <div>
+      <dt>Let your agent do it</dt>
+      <dd>toolshed is an MCP server itself: ask your agent to add a server, and approve what it will run with one keypress. <a href="{{ "docs/agents/" | relURL }}">Your agent</a></dd>
+    </div>
+    <div>
+      <dt>Share a toolbox</dt>
+      <dd>Your tools live in one small YAML file. Commit it, and your team gets the same setup. <a href="{{ "docs/registry/" | relURL }}">The registry</a></dd>
+    </div>
   </dl>
   <p class="foot">Open source, MIT licensed, macOS and Linux. <a href="{{ site.Params.repo }}">github.com/bartdegoede/toolshed</a></p>
   {{ partial "pager.html" . }}
